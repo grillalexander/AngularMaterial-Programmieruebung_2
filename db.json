@@ -87,23 +87,18 @@
   ],
   "registrations": [
     {
-      "id": 1,
-      "name": "Testuser",
-      "birthdate": "2024-11-13",
-      "courseId": "_iL775j"
-    },
-    {
-      "id": 2,
-      "name": "Julia",
-      "birthdate": "2024-11-13",
-      "courseId": "_iL775p"
-    },
-    {
       "name": "Alexander Grill",
       "birthdate": "2025-11-11",
       "courseId": "_iL775p",
       "newsletterEmail": false,
       "id": 3
+    },
+    {
+      "name": "Alexander Grill",
+      "birthdate": "2025-12-09",
+      "courseId": "_iL775p",
+      "newsletterEmail": false,
+      "id": 4
     }
   ]
 }
