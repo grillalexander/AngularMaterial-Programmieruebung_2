@@ -1,0 +1,58 @@
+<div class="data-section">
+  <h1>Alle Kurse</h1>
+  @if (store.courses.length === 0) {
+  <p class="empty-message">Keine Kurse verfügbar.</p>
+  } @else {
+  <div class="courses-grid">
+    <div class="grid-row header-row">
+      <div class="cell">Kurs</div>
+      <div class="cell">Veranstaltungsort</div>
+      <div class="cell">Adresse</div>
+      <div class="cell">Öffentlich erreichbar?</div>
+      <div class="cell">Kursleiter</div>
+      <div class="cell">Alle Termine</div>
+    </div>
+    @for(course of store.courses; track $index) {
+    <div class="grid-row" [class.even-row]="$even">
+      <div class="cell"><strong>{{ course.name }}</strong></div>
+      <div class="cell">{{ course.eventLocation.name }}</div>
+      <div class="cell">{{ course.eventLocation.address }}</div>
+      <div class="cell">{{ course.eventLocation.venueByPublicTansport == true ? 'Ja' : 'Nein' }}</div>
+      <div class="cell">{{ course.instructor }}</div>
+      <div class="cell">
+        <ul class="dates-list">
+          @for(date of course.dates; track $index) {
+          <li>
+            <span>{{ date.begin | date : "MMM dd, yyyy 'um' hh:mm a" }}</span> -
+            <span>{{ date.end | date : "MMM dd, yyyy 'um' hh:mm a" }}</span>
+          </li>
+          }
+        </ul>
+      </div>
+    </div>
+    }
+  </div>
+  }
+</div>
+
+<div class="data-section">
+  <h1>Alle Anmeldungen</h1>
+  @if (store.registrations.length === 0) {
+  <p class="empty-message">Noch keine Anmeldungen vorhanden.</p>
+  } @else {
+  <div class="registrations-grid">
+    <div class="grid-row header-row">
+      <div class="cell">Name</div>
+      <div class="cell">Geburtsdatum</div>
+      <div class="cell">Kurs</div>
+    </div>
+    @for(registration of store.registrations; track $index) {
+    <div class="grid-row" [class.even-row]="$even">
+      <div class="cell">{{ registration.name }}</div>
+      <div class="cell">{{ registration.birthdate }}</div>
+      <div class="cell">{{ registration.course?.name || '-' }}</div>
+    </div>
+    }
+  </div>
+  }
+</div>

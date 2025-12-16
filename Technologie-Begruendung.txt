@@ -1,0 +1,16 @@
+Technologie-Begründung: CSS Grid
+
+Ich habe mich für CSS Grid anstatt Bootstrap Grid entschieden, weil:
+
+1. CSS Grid ist eine native CSS-Technologie und benötigt keine zusätzlichen Dependencies
+2. Es bietet mehr Flexibilität bei der Gestaltung von komplexen Layouts
+3. Die Responsive-Anforderungen (10 Spalten Desktop, 12 Spalten Mobile) lassen sich einfach mit Media Queries umsetzen
+4. CSS Grid ermöglicht eine einfache vertikale Zentrierung der Inhalte innerhalb der Rows
+5. Die horizontale Zentrierung des 10-Spalten-Grids auf Desktop ist mit max-width und margin: auto unkompliziert zu realisieren
+
+Die Implementierung verwendet:
+- grid-template-columns für die Spaltenanzahl
+- Media Queries für die Responsive-Umschaltung zwischen Mobile (12 Spalten) und Desktop (10 Spalten)
+- min-height und align-items: center für die vertikale Zentrierung auf Desktop
+- max-width: 83.33% (10/12) für die horizontale Zentrierung des Grids
+

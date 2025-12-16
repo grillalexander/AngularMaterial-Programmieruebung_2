@@ -1,0 +1,50 @@
+<div class="form-container">
+  <h2>Zum Kurs anmelden!</h2>
+  <p class="form-description">Bitte füllen Sie alle Pflichtfelder aus, um sich für einen Kurs anzumelden.</p>
+
+  <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="outline">
+      <mat-label>Name der registrierten Person *</mat-label>
+      <input matInput formControlName="name" placeholder="Ihr vollständiger Name" />
+      @if (signupForm.get('name')?.invalid && signupForm.get('name')?.touched) {
+      <mat-error>{{ getErrorMessage('name') }}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Geburtsdatum *</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="birthdate" />
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      @if (signupForm.get('birthdate')?.invalid && signupForm.get('birthdate')?.touched) {
+      <mat-error>{{ getErrorMessage('birthdate') }}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Kurs auswählen *</mat-label>
+      <mat-select formControlName="courseId">
+        <mat-option value="" disabled>Bitte wählen Sie einen Kurs aus</mat-option>
+        @for (course of store.courses; track course.id) {
+        <mat-option [value]="course.id">{{ course.name }}</mat-option>
+        }
+      </mat-select>
+      @if (signupForm.get('courseId')?.invalid && signupForm.get('courseId')?.touched) {
+      <mat-error>{{ getErrorMessage('courseId') }}</mat-error>
+      }
+      @if (store.courses.length === 0) {
+      <mat-hint>Kurse werden geladen...</mat-hint>
+      }
+    </mat-form-field>
+
+    <div class="checkbox-container">
+      <mat-checkbox formControlName="newsletterEmail">
+        Ich möchte den Newsletter für neue Kursangebote erhalten
+      </mat-checkbox>
+    </div>
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="signupForm.invalid">
+      Anmeldung abschicken
+    </button>
+  </form>
+</div>
