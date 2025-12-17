@@ -1,6 +1,6 @@
 <div class="data-section">
   <h1>Alle Kurse</h1>
-  @if (store.courses.length === 0) {
+  @if (!hasCourses()) {
   <p class="empty-message">Keine Kurse verfügbar.</p>
   } @else {
   <div class="courses-grid">
@@ -12,7 +12,7 @@
       <div class="cell">Kursleiter</div>
       <div class="cell">Alle Termine</div>
     </div>
-    @for(course of store.courses; track $index) {
+    @for(course of courses(); track course.id) {
     <div class="grid-row" [class.even-row]="$even">
       <div class="cell"><strong>{{ course.name }}</strong></div>
       <div class="cell">{{ course.eventLocation.name }}</div>
@@ -37,7 +37,7 @@
 
 <div class="data-section">
   <h1>Alle Anmeldungen</h1>
-  @if (store.registrations.length === 0) {
+  @if (!hasRegistrations()) {
   <p class="empty-message">Noch keine Anmeldungen vorhanden.</p>
   } @else {
   <div class="registrations-grid">
@@ -46,13 +46,41 @@
       <div class="cell">Geburtsdatum</div>
       <div class="cell">Kurs</div>
     </div>
-    @for(registration of store.registrations; track $index) {
-    <div class="grid-row" [class.even-row]="$even">
+    @for(registration of paginatedRegistrations(); track registration.id) {
+    <div class="grid-row" [class.even-row]="$even" [class.deleting]="isDeleting(registration.id)">
       <div class="cell">{{ registration.name }}</div>
-      <div class="cell">{{ registration.birthdate }}</div>
+      <div class="cell">{{ registration.birthdate | date : 'dd.MM.yyyy' }}</div>
       <div class="cell">{{ registration.course?.name || '-' }}</div>
+      <button
+        class="row-action-button"
+        mat-icon-button
+        color="warn"
+        (click)="deleteRegistration(registration)"
+        [disabled]="isDeleting(registration.id)"
+        [attr.aria-label]="'Anmeldung von ' + registration.name + ' löschen'"
+        type="button"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+      @if (isDeleting(registration.id)) {
+      <div class="row-loading-overlay" aria-live="polite" aria-label="Löschen läuft...">
+        <mat-spinner diameter="40"></mat-spinner>
+      </div>
+      }
     </div>
     }
   </div>
+  @if (hasRegistrations()) {
+  <mat-paginator
+    [length]="totalRegistrations()"
+    [pageSize]="pageSize()"
+    [pageIndex]="pageIndex()"
+    [pageSizeOptions]="pageSizeOptions"
+    [showFirstLastButtons]="true"
+    (page)="onPageChange($event)"
+    aria-label="Seite auswählen"
+  >
+  </mat-paginator>
+  }
   }
 </div>

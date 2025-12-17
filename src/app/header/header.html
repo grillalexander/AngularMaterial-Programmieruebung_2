@@ -2,7 +2,7 @@
   <h1>{{ title }}</h1>
   <img [src]="imagePath" alt="Sport" />
   <nav>
-    <a [routerLink]="['/dashboard']">Dashboard</a>
-    <a [routerLink]="['/about']">About</a>
+    <a [routerLink]="['/dashboard']" [class.active]="isActive('/dashboard') || isActive('/')">Dashboard</a>
+    <a [routerLink]="['/about']" [class.active]="isActive('/about')">About</a>
   </nav>
 </div>

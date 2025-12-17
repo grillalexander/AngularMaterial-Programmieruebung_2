@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit, computed } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Store } from '../../shared/store';
 import { Backend } from '../../shared/backend';
@@ -25,13 +25,16 @@ import { MatButtonModule } from '@angular/material/button';
   templateUrl: './add-data.html',
   styleUrl: './add-data.scss',
 })
-export class AddData {
+export class AddData implements OnInit {
   public store = inject(Store);
   public backend = inject(Backend);
   private fb = inject(FormBuilder);
   public signupForm: any;
 
-  ngOnInit() {
+  public readonly courses = computed(() => this.store.courses());
+  public readonly hasCourses = computed(() => this.courses().length > 0);
+
+  ngOnInit(): void {
     this.signupForm = this.fb.group({
       name: ['', Validators.required],
       birthdate: ['', Validators.required],
@@ -39,10 +42,8 @@ export class AddData {
       newsletterEmail: [false],
     });
     
-    // Ensure courses are loaded
-    if (this.store.courses.length === 0) {
-      this.backend.getCourses();
-    }
+    // Always ensure courses are loaded
+    this.backend.getCourses();
   }
 
   onSubmit() {
