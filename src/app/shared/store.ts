@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { RegistrationDto } from './Interfaces/Registration';
 import { Course } from './Interfaces/Course';
 
@@ -6,6 +6,6 @@ import { Course } from './Interfaces/Course';
   providedIn: 'root',
 })
 export class Store {
-  public courses: Course[] = [];
-  public registrations: RegistrationDto[] = [];
+  public courses = signal<Course[]>([]);
+  public registrations = signal<RegistrationDto[]>([]);
 }

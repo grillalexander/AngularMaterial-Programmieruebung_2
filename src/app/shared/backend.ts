@@ -19,7 +19,7 @@ export class Backend {
       .get<Course[]>('http://localhost:3000/courses?_expand=eventLocation')
       .subscribe({
         next: (data: Course[]) => {
-          this.store.courses = data;
+          this.store.courses.set(data);
         },
         error: (err: any) => {
           console.error('Fehler beim Laden der Kurse:', err);
@@ -37,7 +37,7 @@ export class Backend {
       .get<RegistrationDto[]>('http://localhost:3000/registrations?_expand=course')
       .subscribe({
         next: (data: RegistrationDto[]) => {
-          this.store.registrations = data;
+          this.store.registrations.set(data);
         },
         error: (err: any) => {
           console.error('Fehler beim Laden der Anmeldungen:', err);

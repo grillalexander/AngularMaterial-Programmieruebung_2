@@ -25,14 +25,14 @@
       <mat-label>Kurs auswählen *</mat-label>
       <mat-select formControlName="courseId">
         <mat-option value="" disabled>Bitte wählen Sie einen Kurs aus</mat-option>
-        @for (course of store.courses; track course.id) {
+        @for (course of courses(); track course.id) {
         <mat-option [value]="course.id">{{ course.name }}</mat-option>
         }
       </mat-select>
       @if (signupForm.get('courseId')?.invalid && signupForm.get('courseId')?.touched) {
       <mat-error>{{ getErrorMessage('courseId') }}</mat-error>
       }
-      @if (store.courses.length === 0) {
+      @if (!hasCourses()) {
       <mat-hint>Kurse werden geladen...</mat-hint>
       }
     </mat-form-field>

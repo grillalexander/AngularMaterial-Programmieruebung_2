@@ -37,15 +37,20 @@ export class Data implements OnInit {
   public readonly deletingIds = signal<Set<string>>(new Set());
 
   // Computed properties
+  public readonly courses = computed(() => this.store.courses());
+  public readonly registrations = computed(() => this.store.registrations());
+
   public readonly paginatedRegistrations = computed(() => {
     const start = this.pageIndex() * this.pageSize();
     const end = start + this.pageSize();
-    return this.store.registrations.slice(start, end);
+    return this.registrations().slice(start, end);
   });
 
-  public readonly totalRegistrations = computed(() => this.store.registrations.length);
+  public readonly totalRegistrations = computed(() => this.registrations().length);
 
   public readonly hasRegistrations = computed(() => this.totalRegistrations() > 0);
+
+  public readonly hasCourses = computed(() => this.courses().length > 0);
 
   ngOnInit(): void {
     // Always ensure data is loaded when component initializes
@@ -105,10 +110,9 @@ export class Data implements OnInit {
     this.deletingIds.set(currentDeleting);
 
     // Remove from store
-    const index = this.store.registrations.findIndex((r) => r.id === registrationId);
-    if (index !== -1) {
-      this.store.registrations.splice(index, 1);
-    }
+    const currentRegistrations = this.store.registrations();
+    const filtered = currentRegistrations.filter((r) => r.id !== registrationId);
+    this.store.registrations.set(filtered);
 
     // Adjust pagination if current page is empty
     this.adjustPaginationAfterDelete();
@@ -136,7 +140,7 @@ export class Data implements OnInit {
   }
 
   private adjustPaginationAfterDelete(): void {
-    const totalAfterDelete = this.store.registrations.length;
+    const totalAfterDelete = this.registrations().length;
     if (totalAfterDelete === 0) {
       this.pageIndex.set(0);
       return;

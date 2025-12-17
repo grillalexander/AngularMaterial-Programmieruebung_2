@@ -39,7 +39,7 @@ h1 {
   .courses-grid,
   .registrations-grid {
     grid-template-columns: repeat(10, 1fr);
-    max-width: 83.33%;
+    max-width: 95%;
     margin-left: auto;
     margin-right: auto;
   }
@@ -50,27 +50,35 @@ h1 {
   grid-column: 1 / -1;
   gap: 1rem;
   transition: transform 0.2s ease;
+  align-items: stretch; /* Ensure all cells in a row have the same height */
+  position: relative;
 }
 
 .grid-row:hover:not(.header-row) {
   transform: translateX(4px);
 }
 
-/* Kurse Grid: 6 Spalten */
+/* Kurse Grid: 6 Spalten mit unterschiedlichen Breiten für bessere Lesbarkeit */
 .courses-grid .grid-row {
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: 
+    minmax(130px, 4fr)    /* Kurs */
+    minmax(130px, 5.5fr)      /* Veranstaltungsort */
+    minmax(150px, 4fr)    /* Adresse */
+    minmax(120px, 3fr)    /* Öffentlich erreichbar? */
+    minmax(150px, 1.5fr)      /* Kursleiter */
+    minmax(200px, 2.5fr);   /* Alle Termine */
 }
 
-/* Anmeldungen Grid: 4 Spalten (Name, Geburtsdatum, Kurs, Aktionen) */
+/* Anmeldungen Grid: 3 Spalten (Name, Geburtsdatum, Kurs mit Aktionen) */
 .registrations-grid .grid-row {
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
 }
 
 .cell {
   padding: 1.5rem;
   border: 1px solid #e0e0e0;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   background-color: #ffffff;
   word-wrap: break-word;
   border-radius: 8px;
@@ -78,16 +86,28 @@ h1 {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
+/* Center align for action cells */
+.actions-cell {
+  align-items: center;
+}
+
+
 .cell:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border-color: #3f51b5;
   transform: translateY(-2px);
 }
 
-/* Desktop: Feste Höhe und vertikale Zentrierung */
+/* Desktop: Feste Höhe für alle Zellen in einer Reihe */
 @media (min-width: 768px) {
   .cell {
     min-height: 90px;
+  }
+  
+  /* Dates cell - kompakt aber gleiche Höhe wie andere Zellen */
+  .courses-grid .grid-row:not(.header-row) .cell:last-child {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
   }
 }
 
@@ -118,17 +138,17 @@ h1 {
 
 .dates-list {
   margin: 0;
-  padding-left: 1.5rem;
+  padding-left: 1rem;
   list-style-type: none;
 }
 
 .dates-list li {
-  margin-bottom: 0.75rem;
-  font-size: 0.9rem;
-  padding-left: 1rem;
+  margin-bottom: 0.4rem;
+  font-size: 0.85rem;
+  padding-left: 0.75rem;
   position: relative;
   color: #424242;
-  line-height: 1.5;
+  line-height: 1.3;
 }
 
 .dates-list li::before {
@@ -171,11 +191,17 @@ h1 {
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  gap: 0.5rem;
   min-width: 80px;
 }
 
+.actions-cell span {
+  flex: 1;
+}
+
 .actions-cell button {
+  flex-shrink: 0;
   transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
@@ -187,6 +213,25 @@ h1 {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+.registrations-grid .grid-row .row-action-button {
+  position: absolute;
+  right: -3.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.registrations-grid .grid-row .row-action-button:hover:not(:disabled) {
+  transform: translateY(-50%) scale(1.1);
+}
+
+.registrations-grid .grid-row .row-action-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 
 /* Pagination styling */
 mat-paginator {
